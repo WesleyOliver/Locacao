@@ -1,59 +1,44 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layoutPadrao}">
 <head>
 <meta charset="UTF-8">
 <title>Cadastro de Fabricante</title>
 </head>
 <body>
-
-	<a th:href="@{/fabricantes}">Lista Fabricantes</a>
-	/
-	<a th:href="@{/modelos/novo}">Cadastro Modelo</a>
-	/
-	<a th:href="@{/modelos}">Lista modelos</a>
-	/
-	<a th:href="@{/carros/novo}">Cadastro Carro</a>
-	/
-	<a th:href="@{/carros}">Lista Carros</a>
-	/
-	<a th:href="@{/motoristas/novo}">Cadastro Motoristas</a>
-	/
-	<a th:href="@{/motoristas}">Lista Motoristas</a>
-	/
-	<a th:href="@{/locacoes/novo}">Cadastro Locações</a>
-	/
-	<a th:href="@{/locacoes}">Lista Locações</a>
-	<br/>
+	
+	<section layout:fragment="conteudo">
 	
 	
-	<h3>Cadastro de Fabricante</h3>	
-	
-	<form action="/fabricantes" method="POST" th:object="${fabricante}">
-	
-		<!-- Mensagens de Erros -->
-		<div th:if="${#fields.hasAnyErrors()}">
-			<div th:each="error : ${#fields.detailedErrors()}"> 
-				<span th:text="${error.message}"></span>
+		<h3 class="text-center">Cadastro de Fabricante</h3>	
+		
+		<form action="/fabricantes" method="POST" th:object="${fabricante}">
+		
+			<!-- Erros -->
+			<div th:replace="mensagemErro">	</div>	
+			
+			<!-- Mensagem geral -->
+			<div th:replace="mensagemGeral"></div>			
+					
+			<div class="container shadow-lg p-3 mb-5 bg-light rounded"> 
+		
+				<input type="hidden" th:field="*{id}" />
+				
+				<div class="form-group form-control-sm">
+					<label for="nome">Nome</label>
+					<input class="form-control" id="nome" type="text" th:field="*{nome}" />
+				</div>
+				
+				<div class="form-group form-control-sm">
+					<label for="descricao">Descrição</label>
+					<input class="form-control" id="descricao" type="text" th:field="*{descricao}"/>
+				</div>
+				
+				<button class="btn btn-primary" type="submit">Salvar</button>
 			</div>
-		</div>
 		
-		<!-- Mensagens geral -->
-		<div th:if="${!#strings.isEmpty(mensagem)}">
-			<span th:text="${mensagem}"></span>		
-		</div>
-	
-		<input type="hidden" th:field="*{id}" />
-		
-		<label for="nome">Nome</label>
-		<input id="nome" type="text" th:field="*{nome}" />
-		<br/>
-		
-		<label for="descricao">Descrição</label>
-		<input id="descricao" type="text" th:field="*{descricao}"/>
-		<br/>
-		
-		<button type="submit">Salvar</button>
-	
-	</form>
+		</form>
+	</section>
 </body>
 </html>

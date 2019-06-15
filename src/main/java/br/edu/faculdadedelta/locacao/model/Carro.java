@@ -1,4 +1,4 @@
-package br.edu.faculdadedelta.locacao.modelo;
+package br.edu.faculdadedelta.locacao.model;
 
 import java.math.BigDecimal;
 

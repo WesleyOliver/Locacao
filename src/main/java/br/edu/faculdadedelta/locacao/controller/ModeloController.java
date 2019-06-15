@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,21 +15,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.edu.faculdadedelta.locacao.modelo.Fabricante;
-import br.edu.faculdadedelta.locacao.modelo.Modelo;
+import br.edu.faculdadedelta.locacao.model.Fabricante;
+import br.edu.faculdadedelta.locacao.model.Modelo;
 import br.edu.faculdadedelta.locacao.modelo.types.Categoria;
-import br.edu.faculdadedelta.locacao.repository.FabricanteRepository;
-import br.edu.faculdadedelta.locacao.repository.ModeloRepository;
+import br.edu.faculdadedelta.locacao.service.FabricanteService;
+import br.edu.faculdadedelta.locacao.service.ModeloService;
 
 @Controller
 @RequestMapping("/modelos")
 public class ModeloController {
 
 	@Autowired
-	private ModeloRepository modeloRepository;
+	private ModeloService modeloService;
 
 	@Autowired
-	private FabricanteRepository fabricanteRepository;
+	private FabricanteService fabricanteService;
 
 	private static final String MODELO_CADASTRO = "modeloCadastro";
 	private static final String MODELO_LISTA = "modeloLista";
@@ -45,7 +44,7 @@ public class ModeloController {
 
 	@ModelAttribute(name = "todosFabricantes")
 	public List<Fabricante> todosFabricantes() {
-		return fabricanteRepository.findAll();
+		return fabricanteService.listar();
 	}
 
 	@ModelAttribute(name = "todasCategorias")
@@ -59,11 +58,11 @@ public class ModeloController {
 			return new ModelAndView(MODELO_CADASTRO);
 
 		if (modelo.getId() == null) {
-			modeloRepository.save(modelo);
+			modeloService.incluir(modelo);
 
 			redirectAttributes.addFlashAttribute("mensagem", "Modelo cadastrado com sucesso!");
 		} else {
-			modeloRepository.save(modelo);
+			modeloService.alterar(modelo);
 
 			redirectAttributes.addFlashAttribute("mensagem", "Modelo alterado com sucesso!");
 		}
@@ -74,7 +73,7 @@ public class ModeloController {
 	@GetMapping
 	public ModelAndView listar() {
 		ModelAndView modelAndView = new ModelAndView(MODELO_LISTA);
-		modelAndView.addObject("modelos", modeloRepository.findAll());
+		modelAndView.addObject("modelos", modeloService.listar());
 
 		return modelAndView;
 
@@ -83,7 +82,7 @@ public class ModeloController {
 	@GetMapping("/editar/{id}")
 	public ModelAndView editar(@PathVariable("id") Long id) {
 		ModelAndView modelAndView = new ModelAndView(MODELO_CADASTRO);
-		modelAndView.addObject(modeloRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(0)));
+		modelAndView.addObject(modeloService.pesquisarPorId(id));
 
 		return modelAndView;
 	}
@@ -91,7 +90,7 @@ public class ModeloController {
 	@GetMapping("/excluir/{id}")
 	public ModelAndView exluir(@PathVariable("id") Long id) {
 		ModelAndView modelAndView = new ModelAndView("redirect:/modelos");
-		modeloRepository.deleteById(id);
+		modeloService.excluir(id);;
 
 		return modelAndView;
 	}

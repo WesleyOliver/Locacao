@@ -1,13 +1,18 @@
-package br.edu.faculdadedelta.locacao.modelo;
+package br.edu.faculdadedelta.locacao.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import br.edu.faculdadedelta.locacao.modelo.types.Sexo;
 
 @Entity
-public class Fabricante {
+public class Motorista {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,18 +21,27 @@ public class Fabricante {
 	@NotBlank(message = "O campo nome é obrigatório!")
 	private String nome;
 
-	@NotBlank(message = "O campo descrição é obrigatório!")
-	private String descricao;
+	@NotBlank(message = "O campo CPF é obrigatório!")
+	private String cpf;
 
-	public Fabricante() {
+	@NotBlank(message = "O campo CNH é obrigatório!")
+	private String cnh;
+
+	@Enumerated(EnumType.STRING)
+	@NotNull(message = "O campo sexo é obrigatório!")
+	private Sexo sexo;
+
+	public Motorista() {
 		super();
 	}
 
-	public Fabricante(Long id, String nome, String descricao) {
+	public Motorista(Long id, String nome, String cpf, String cnh, Sexo sexo) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.descricao = descricao;
+		this.cpf = cpf;
+		this.cnh = cnh;
+		this.sexo = sexo;
 	}
 
 	public Long getId() {
@@ -46,12 +60,28 @@ public class Fabricante {
 		this.nome = nome;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getCpf() {
+		return cpf;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getCnh() {
+		return cnh;
+	}
+
+	public void setCnh(String cnh) {
+		this.cnh = cnh;
+	}
+
+	public Sexo getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(Sexo sexo) {
+		this.sexo = sexo;
 	}
 
 	@Override
@@ -70,7 +100,7 @@ public class Fabricante {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Fabricante other = (Fabricante) obj;
+		Motorista other = (Motorista) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

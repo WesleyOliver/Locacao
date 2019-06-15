@@ -3,7 +3,6 @@ package br.edu.faculdadedelta.locacao.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,16 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import br.edu.faculdadedelta.locacao.modelo.Motorista;
+import br.edu.faculdadedelta.locacao.model.Motorista;
 import br.edu.faculdadedelta.locacao.modelo.types.Sexo;
-import br.edu.faculdadedelta.locacao.repository.MotoristaRepository;
+import br.edu.faculdadedelta.locacao.service.MotoristaService;
 
 @Controller
 @RequestMapping("/motoristas")
 public class MotoristaController {
 
 	@Autowired
-	private MotoristaRepository motoristaRepository;
+	private MotoristaService motoristaService;
 
 	private static final String MOTORISTA_CADASTRO = "motoristaCadastro";
 	private static final String MOTORISTA_LISTA = "motoristaLista";
@@ -47,11 +46,11 @@ public class MotoristaController {
 			return new ModelAndView(MOTORISTA_CADASTRO);
 
 		if (motorista.getId() == null) {
-			motoristaRepository.save(motorista);
+			motoristaService.incluir(motorista);
 
 			redirectAttributes.addFlashAttribute("mensagem", "Motorista cadastrado com sucesso!");
 		} else {
-			motoristaRepository.save(motorista);
+			motoristaService.alterar(motorista);
 
 			redirectAttributes.addFlashAttribute("mensagem", "Motorista alterado com sucesso!");
 		}
@@ -62,7 +61,7 @@ public class MotoristaController {
 	@GetMapping
 	public ModelAndView listar() {
 		ModelAndView modelAndView = new ModelAndView(MOTORISTA_LISTA);
-		modelAndView.addObject("motoristas", motoristaRepository.findAll());
+		modelAndView.addObject("motoristas", motoristaService.listar());
 
 		return modelAndView;
 	}
@@ -70,8 +69,7 @@ public class MotoristaController {
 	@GetMapping("/editar/{id}")
 	public ModelAndView editar(@PathVariable("id") Long id) {
 		ModelAndView modelAndView = new ModelAndView(MOTORISTA_CADASTRO);
-		modelAndView
-				.addObject(motoristaRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(0)));
+		modelAndView.addObject(motoristaService.pesquisarPorId(id));
 
 		return modelAndView;
 	}
@@ -79,7 +77,7 @@ public class MotoristaController {
 	@GetMapping("/excluir/{id}")
 	public ModelAndView exluir(@PathVariable("id") Long id) {
 		ModelAndView modelAndView = new ModelAndView("redirect:/motoristas");
-		motoristaRepository.deleteById(id);
+		motoristaService.excluir(id);
 
 		return modelAndView;
 	}

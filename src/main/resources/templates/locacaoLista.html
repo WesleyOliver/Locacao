@@ -1,60 +1,55 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layoutPadrao}">
+	
 <head>
 <meta charset="UTF-8">
-<title>Lista de Locação</title>
+<title>Lista de Locações</title>
 </head>
 <body>
 
-	<a th:href="@{/fabricantes/novo}">Cadastro Fabricante</a>
-    /
-	<a th:href="@{/fabricantes}">Lista Fabricantes</a>
-	/
-	<a th:href="@{/modelos/novo}">Cadastro Modelo</a>
-	/
-	<a th:href="@{/modelos}">Lista modelos</a>
-	/
-	<a th:href="@{/carros/novo}">Cadastro Carro</a>
-	/
-	<a th:href="@{/carros}">Lista Carros</a>
-	/
-	<a th:href="@{/motoristas/novo}">Cadastro Motoristas</a>
-	/
-	<a th:href="@{/motoristas}">Lista Motoristas</a>
-	/
-	<a th:href="@{/locacoes/novo}">Cadastro Locações</a>
-	<br/>	
-
-	<h3>Lista de Locação</h3>
-	
-	<table border="1">
-		<thead>
-			<tr>
-				<th>Código</th>
-				<th>Valor Total</th>
-				<th>Data da Locação</th>
-				<th>Data da Devolução</th>
-				<th>Carro</th>
-				<th>Motorista</th>
-				<th>Ações</th>
-			</tr>
-		</thead>
+	<section layout:fragment="conteudo">
 		
-		<tbody>
-			<tr th:each="locacao : ${locacoes}">
-				<td th:text="${locacao.id}"></td>
-				<td th:text="${{locacao.valorTotal}}"></td>
-				<td th:text="${locacao.dataDeLocacao}"></td>
-				<td th:text="${locacao.dataDeDevolucao}"></td>
-				<td th:text="${locacao.carro.placa}"></td>
-				<td th:text="${locacao.motorista.nome}"></td>
-				<td>
-					<a th:href="@{/locacoes/editar/{id}(id=${locacao.id})}">Editar</a>
-					<a onclick="return confirm('Confirma a exclusão?');" th:href="@{/locacoes/excluir/{id}(id=${locacao.id})}">Excluir</a>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+		<h3 class="text-center">Lista de Locações</h3>
+			
+		<div class="container">
+		
+			
+			<table border="1" class="table table-striped">
+				<thead>
+					<tr>
+						<th>Código</th>
+						<th>Valor Total</th>
+						<th>Data da Locação</th>
+						<th>Data da Devolução</th>
+						<th>Carro</th>
+						<th>Motorista</th>
+						<th>Ações</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each="locacao : ${locacoes}">
+						<td th:text="${locacao.id}"></td>
+						<td th:text="${{locacao.valorTotal}}"></td>
+						<td th:text="${locacao.dataDeLocacao}"></td>
+						<td th:text="${locacao.dataDeDevolucao}"></td>
+						<td th:text="${locacao.carro.placa}"></td>
+						<td th:text="${locacao.motorista.nome}"></td>
+						<td>
+							<a class="btn btn-success" th:href="@{/locacoes/editar/{id}(id=${locacao.id})}">Editar</a>
+							<a class="btn btn-danger" onclick="return confirm('Confirma a exclusão?');" th:href="@{/locacoes/excluir/{id}(id=${locacao.id})}">Excluir</a>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="7" th:if="${#lists.isEmpty(locacoes)}" >Nenhuma locação cadastrado!</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
 
 </body>
 </html>
