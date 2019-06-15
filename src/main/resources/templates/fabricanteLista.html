@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Lista de Fabricantes</title>
+</head>
+<body>
+
+	<a th:href="@{/fabricantes/novo}">Cadastro Fabricante</a>
+	/
+	<a th:href="@{/modelos/novo}">Cadastro Modelo</a>
+	/
+	<a th:href="@{/modelos}">Lista modelos</a>
+	/
+	<a th:href="@{/carros/novo}">Cadastro Carro</a>
+	/
+	<a th:href="@{/carros}">Lista Carros</a>
+	/
+	<a th:href="@{/motoristas/novo}">Cadastro Motoristas</a>
+	/
+	<a th:href="@{/motoristas}">Lista Motoristas</a>
+	/
+	<a th:href="@{/locacoes/novo}">Cadastro Locações</a>
+	/
+	<a th:href="@{/locacoes}">Lista Locações</a>
+	<br/>	
+	
+	<h3>Lista de Fabricantes</h3>
+	
+	<table border="1">
+		<thead>
+			<tr>
+				<th>Código</th>
+				<th>Nome</th>
+				<th>Descrição</th>
+				<th>Ação</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="fabricante : ${fabricantes}">
+				<td th:text="${fabricante.id}"></td>
+				<td th:text="${fabricante.nome}"></td>
+				<td th:text="${fabricante.descricao}"></td>
+				<td>
+					<a th:href="@{/fabricantes/editar/{id}(id=${fabricante.id})}">Editar</a>
+					<a onclick="return confirm('Confirma a exclusão?');" th:href="@{/fabricantes/excluir/{id}(id=${fabricante.id})}">Exlcluir</a>
+				</td>
+			</tr>
+		</tbody>	
+	</table>
+</body>
+</html>

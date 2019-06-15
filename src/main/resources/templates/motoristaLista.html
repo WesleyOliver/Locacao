@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Lista de Motorista</title>
+</head>
+<body>
+
+	<a th:href="@{/fabricantes/novo}">Cadastro Fabricante</a>
+    /
+	<a th:href="@{/fabricantes}">Lista Fabricantes</a>
+	/
+	<a th:href="@{/modelos/novo}">Cadastro Modelo</a>
+	/
+	<a th:href="@{/modelos}">Lista modelos</a>
+	/
+	<a th:href="@{/carros/novo}">Cadastro Carro</a>
+	/
+	<a th:href="@{/carros}">Lista Carros</a>
+	/
+	<a th:href="@{/motoristas/novo}">Cadastro Motoristas</a>
+	/
+	<a th:href="@{/locacoes/novo}">Cadastro Locações</a>
+	/
+	<a th:href="@{/locacoes}">Lista Locações</a>
+	<br/>	
+
+	<h3>Lista de Motoristas</h3>
+	
+	<table border="1">
+	
+		<thead>
+			<tr>
+				<td>Código</td>
+				<td>Nome</td>
+				<td>CPF</td>
+				<td>CNH</td>
+				<td>Sexo</td>
+				<td>Ações</td>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="motorista : ${motoristas}">
+				<td th:text="${motorista.id}"></td>
+				<td th:text="${motorista.nome}"></td>
+				<td th:text="${motorista.cpf}"></td>
+				<td th:text="${motorista.cnh}"></td>
+				<td th:text="${motorista.sexo}"></td>
+				<td>
+					<a th:href="@{/motoristas/editar/{id}(id=${motorista.id})}">Editar</a>
+					<a onclick="return confirm('Confirma a exclusão?')" th:href="@{/motoristas/excluir/{id}(id=${motorista.id})}">Excluir</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+</body>
+</html>

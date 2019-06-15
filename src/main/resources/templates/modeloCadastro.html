@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Cadastro de Modelo</title>
+</head>
+<body>
+
+	<a th:href="@{/fabricantes/novo}">Cadastro Fabricante</a>
+    /
+	<a th:href="@{/fabricantes}">Lista Fabricantes</a>
+	/
+	<a th:href="@{/modelos}">Lista modelos</a>
+	/
+	<a th:href="@{/carros/novo}">Cadastro Carro</a>
+	/
+	<a th:href="@{/carros}">Lista Carros</a>
+	/
+	<a th:href="@{/motoristas/novo}">Cadastro Motoristas</a>
+	/
+	<a th:href="@{/motoristas}">Lista Motoristas</a>
+	/
+	<a th:href="@{/locacoes/novo}">Cadastro Locações</a>
+	/
+	<a th:href="@{/locacoes}">Lista Locações</a>
+	<br/>
+
+	<h3>Cadastro de Modelo</h3>
+	
+	<form action="/modelos" method="POST" th:object="${modelo}">
+		
+		<!-- Erros -->
+		<div th:if="${#fields.hasAnyErrors()}">
+			<div th:each="error : ${#fields.detailedErrors()}"> 
+				<span th:text="${error.message}"></span>
+			</div>
+		</div>
+		
+		<!-- Mensagem geral -->
+		<div th:if="${!#strings.isEmpty(mensagem)}">
+			<span th:text="${mensagem}"></span>		
+		</div>
+		
+		<input type="hidden" th:field="*{id}" />
+		
+		<label for="descricao">Descrição</label>
+		<input id="descricao" th:field="*{descricao}" />
+		<br/>
+		
+		<label for="fabricante">Fabricante</label>
+		<select id="fabricante" th:field="*{fabricante}">
+			<option value="">SELECIONE</option>
+			<option th:each="fabricante : ${todosFabricantes}" th:text="${fabricante.nome}" th:value="${fabricante.id}"></option>		
+		</select>
+		<br/>
+		
+		<label for="categoria">Categoria</label>
+		<select id="categoria" th:field="*{categoria}">
+			<option value="">SELECIONE</option>
+			<option th:each="categoria : ${todasCategorias}" th:text="${categoria.descricao}" th:value="${categoria}"></option>
+		</select>
+		<br/>
+		
+		<button type="submit">Salvar</button>	
+	
+	</form>
+</body>
+</html>
+
+		

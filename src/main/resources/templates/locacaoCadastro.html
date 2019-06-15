@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Cadastro de Locação</title>
+</head>
+<body>
+
+	<a th:href="@{/fabricantes/novo}">Cadastro Fabricante</a>
+    /
+	<a th:href="@{/fabricantes}">Lista Fabricantes</a>
+	/
+	<a th:href="@{/modelos/novo}">Cadastro Modelo</a>
+	/
+	<a th:href="@{/modelos}">Lista modelos</a>
+	/
+	<a th:href="@{/carros/novo}">Cadastro Carro</a>
+	/
+	<a th:href="@{/carros}">Lista Carros</a>
+	/
+	<a th:href="@{/motoristas/novo}">Cadastro Motoristas</a>
+	/
+	<a th:href="@{/motoristas}">Lista Motoristas</a>
+	/
+	<a th:href="@{/locacoes}">Lista Locações</a>
+	<br/>	
+
+
+	<h3>Cadastro de Locação</h3>
+	
+	<form action="/locacoes" method="POST" th:object="${locacao}">
+	
+		<!-- Erros -->
+		<div th:if="${#fields.hasAnyErrors()}">
+			<div th:each="error : ${#fields.detailedErrors()}"> 
+				<span th:text="${error.message}"></span>
+			</div>
+		</div>
+		
+		<!-- Mensagem geral -->
+		<div th:if="${!#strings.isEmpty(mensagem)}">
+			<span th:text="${mensagem}"></span>		
+		</div>
+		
+		<input type="hidden" th:field="*{id}" />
+		
+		<label for="valor">Valor Total</label>
+		<input id="valor" th:field="*{valorTotal}" />
+		<br/>
+		
+		<label for="dataDeLocacao">Data da Locação:</label>
+		<input id="dataDeLocacao" type="date" th:field="*{dataDeLocacao}"/>		
+		<br/>
+		
+		<label for="dataDeDevolucao">Data da Devolução:</label>
+		<input id="dataDeDevolucao" type="date" th:field="*{dataDeDevolucao}"/>		
+		<br/>
+		
+		<label for="carro">Carro</label>
+		<select id="carro" th:field="*{carro}">
+			<option value="">SELECIONE</option>
+			<option th:each="carro : ${todosCarros}" th:text="${carro.placa}" th:value="${carro.id}"></option>
+		</select>
+		<br/>
+		
+		<label for="motorista">Motorista</label>
+		<select id="motorista" th:field="*{motorista}">
+			<option value="">SELECIONE</option>
+			<option th:each="motorista : ${todosMotoristas}" th:text="${motorista.nome}" th:value="${motorista.id}"></option>
+		</select>
+		<br/>
+		
+		<button type="submit">Salvar</button>
+	</form>
+	 
+</body>
+</html>
